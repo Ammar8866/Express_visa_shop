@@ -71,7 +71,7 @@ export default function Contact() {
                                         letterSpacing: "-0.5px",
                                     }}
                                 >
-                                    ammarzaidi1122@gmail.com
+                                    hello@gmail.com
                                 </Text>
                             </Grid.Col>
                             <Grid.Col span={1}>@</Grid.Col>
@@ -92,7 +92,7 @@ export default function Contact() {
                                         letterSpacing: "-0.5px",
                                     }}
                                 >
-                                    03334316748
+                                    *92389355553
                                 </Text>
                             </Grid.Col>
                             <Grid.Col span={1}>@</Grid.Col>
@@ -113,7 +113,7 @@ export default function Contact() {
                                         letterSpacing: "-0.5px",
                                     }}
                                 >
-                                    Tariq Colony Sodiwal Multan Road Lahore
+                                    UAE Dubai
                                 </Text>
                             </Grid.Col>
                             <Grid.Col span={1}>@</Grid.Col>
