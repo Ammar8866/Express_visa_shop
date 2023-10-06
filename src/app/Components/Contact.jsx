@@ -134,7 +134,7 @@ export default function Contact() {
                                         letterSpacing: "-0.5px",
                                     }}
                                 >
-                                    10am - 6pm"
+                                    10am - 6pm
                                 </Text>
                             </Grid.Col>
                         </Grid>
