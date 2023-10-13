@@ -5,6 +5,7 @@ import Home from './Components/Home'
 import Visa from './Components/VisaOption'
 import Contact from './Components/Contact'
 import Footer from './Components/Footer';
+import VisaForm from './Components/VisaForm';
 
 import { Container } from "@mantine/core";
 
@@ -15,6 +16,7 @@ export default function page() {
       <Home />
       <Container size="lg">
         <Visa />
+        <VisaForm />
         <Contact />
       </Container>
       <Footer />
