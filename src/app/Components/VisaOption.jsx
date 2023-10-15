@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Text, Card, Divider, Container } from "@mantine/core";
+import { Grid, Text, Card, Divider, Container, Group, Button } from "@mantine/core";
 import VisaData from "../../../Data.json";
 
 export default function Visa() {
@@ -24,7 +24,7 @@ export default function Visa() {
                             fontSize: "35px",
                             color: "black",
                             lineHeight: "82px",
-                            letterSpacing: "-0.5 px",
+                            letterSpacing: "-0.5px",
                             display: "flex",
                             justifyContent: "center",
                         }}
@@ -33,8 +33,13 @@ export default function Visa() {
                     </Text>
                 </Grid.Col>
 
-                {VisaData.map((project) => (
-                    <Grid.Col span={{ base: 12, xs: 12, sm: 12, md: 6, lg: 4 }} mb="md" key={project.id} p="md">
+                {VisaData.visaData.map((project) => (
+                    <Grid.Col
+                        span={{ base: 12, xs: 12, sm: 12, md: 6, lg: 4 }}
+                        mb="md"
+                        key={project.id}
+                        p="md"
+                    >
                         <Card
                             shadow="lg"
                             radius="lg"
@@ -46,69 +51,90 @@ export default function Visa() {
                             onMouseLeave={handleCardLeave}
                         >
                             <Card.Section>
-                                <a
-                                    href={project.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    style={{ textDecoration: "none" }}
-                                >
-                                    <Text mt="2rem" style={{
+                                <Text
+                                    mt="2rem"
+                                    style={{
                                         fontWeight: "500",
                                         fontSize: "30px",
                                         color: "black",
                                         display: "flex",
                                         justifyContent: "center",
-                                    }}>  {project.title}</Text>
+                                    }}
+                                >
+                                    {project.title}
+                                </Text>
 
-                                    <Text mb="xl" style={{
+                                <Text
+                                    mb="xl"
+                                    style={{
                                         fontWeight: "400",
                                         fontSize: "20px",
                                         color: "black",
                                         display: "flex",
                                         justifyContent: "center",
-                                    }}>
-                                        {project.description}
-                                    </Text>
-                                    <Container size="15rem">
-                                        <Divider size="xl" color="yellow" />
-                                    </Container>
-                                    <div style={{ display: "flex", justifyContent: "center" }}>
-                                        <Text mt="md" mr="xs" mb="sm" style={{
+                                    }}
+                                >
+                                    {project.description}
+                                </Text>
+                                <Container size="15rem">
+                                    <Divider size="xl" color="yellow" />
+                                </Container>
+                                <div style={{ display: "flex", justifyContent: "center" }}>
+                                    <Text
+                                        mt="md"
+                                        mr="xs"
+                                        mb="sm"
+                                        style={{
                                             fontWeight: "600",
                                             fontSize: "50px",
                                             color: "#434343",
                                             display: "flex",
                                             justifyContent: "center",
-                                        }}>
-                                            {project.price}
-                                        </Text>
-                                        <Text pt="lg" style={{
+                                        }}
+                                    >
+                                        {project.price}
+                                    </Text>
+                                    <Text
+                                        pt="lg"
+                                        style={{
                                             fontWeight: "700",
                                             fontSize: "25px",
                                             color: "red",
                                             display: "flex",
                                             justifyContent: "center",
-                                        }}>
-                                            USD
-                                        </Text>
-                                    </div>
+                                        }}
+                                    >
+                                        USD
+                                    </Text>
+                                </div>
 
-                                    <Text mb="3rem" style={{
+                                <Text
+                                    mb="xl"
+                                    style={{
                                         fontWeight: "400",
                                         fontSize: "18px",
                                         color: "black",
                                         display: "flex",
                                         justifyContent: "center",
-                                    }}>
-                                        {project.text}
-                                    </Text>
-                                </a>
+                                    }}
+                                >
+                                    {project.text}
+                                </Text>
+
+                                <Group
+                                    mb="2.5rem"
+                                    style={{ display: "flex", justifyContent: "center" }}
+                                >
+                                    <Button size="md" radius="md" type="submit" style={{ backgroundColor: "#4c0066" }}>
+                                        Proceed
+                                    </Button>
+                                </Group>
                             </Card.Section>
                         </Card>
                     </Grid.Col>
                 ))}
-
             </Grid>
+
         </>
     );
 }
