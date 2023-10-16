@@ -20,6 +20,13 @@
       "description": "SINGLE VISA ENTRY",
       "price": "340",
       "text": "Processing Time 48 hours."
+    },
+    {
+      "id": 4,
+      "title": "96 Days",
+      "description": "SINGLE VISA ENTRY",
+      "price": "450",
+      "text": "Processing Time 48 hours."
     }
   ],
 
