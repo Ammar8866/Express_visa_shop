@@ -9,12 +9,32 @@ import { LiaIdCard } from 'react-icons/lia';
 import { PiUploadSimpleBold } from 'react-icons/pi';
 import CardData from '../../../Data.json';
 
-export default function Options() {
+export default function Form() {
     const [active, setActive] = useState(0);
     const [value, setValue] = useState(null);
+    const [value2, setValue2] = useState(null);
     const [uploadedImages, setUploadedImages] = useState(new Array(CardData.cardData.length).fill(null));
     const [cardHoverStates, setCardHoverStates] = useState(new Array(CardData.cardData.length).fill(false));
     const fileInputs = useRef(Array(CardData.cardData.length).fill(null));
+
+    const nextStep = () => {
+        // Validate the form fields
+        const errors = form.validate().errors;
+        const missingImages = uploadedImages.includes(null);
+
+        if (Object.keys(errors).length > 0 || missingImages) {
+            if (missingImages) {
+                alert('Please upload all Required images.');
+            } else {
+                alert('Please complete all the Required fields.');
+            }
+            return;
+        }
+
+        setActive((current) => {
+            return current < 3 ? current + 1 : current;
+        });
+    };
 
     const buttonStyles = {
         border: '2px solid red',
@@ -52,7 +72,6 @@ export default function Options() {
         setUploadedImages(newImages);
     };
 
-
     const handleImageUpload = (index, file) => {
         if (!file) {
             console.log('No file selected');
@@ -80,10 +99,9 @@ export default function Options() {
         setUploadedImages(newImages);
 
         const newHoverStates = [...cardHoverStates];
-        newHoverStates[index] = false; // Reset hover state when image is uploaded
+        newHoverStates[index] = false; // Reset hover state when the image is uploaded
         setCardHoverStates(newHoverStates);
     };
-
 
     const form = useForm({
         initialValues: {
@@ -91,10 +109,13 @@ export default function Options() {
             passportnumber: '',
             name: '',
             email: '',
-            website: '',
-            github: '',
+            mobilenumber: '',
+            whatsappnumber: '',
+            creditCard: '',
+            expiryDate: '',
+            cvv: '',
+            paymentType: '',
         },
-
         validate: (values) => {
             if (active === 0) {
                 return {
@@ -103,53 +124,55 @@ export default function Options() {
                             ? 'Username must include at least 6 characters'
                             : null,
                     passportnumber:
-                        hasLength({ min: 2, max: 10 }, 'Phone Number must be 2-10 characters long'),
+                        values.passportnumber.trim().length < 6
+                            ? 'Passport Number must include at least 6 characters'
+                            : null,
                 };
-            }
-
-            if (active === 1) {
+            } else if (active === 1) {
                 return {
                     name: values.name.trim().length < 2 ? 'Name must include at least 2 characters' : null,
                     email: /^\S+@\S+$/.test(values.email) ? null : 'Invalid email',
+                    mobilenumber:
+                        values.mobilenumber.trim().length < 6
+                            ? 'Mobile Number must include at least 6 characters'
+                            : null,
+                    whatsappnumber:
+                        values.whatsappnumber.trim().length < 6
+                            ? 'WhatsApp Number must include at least 6 characters'
+                            : null,
+                };
+            } else if (active === 2) {
+                return {
+                    creditCard: !values.creditCard ? 'Credit Card Number is required' : null,
+                    expiryDate: !values.expiryDate ? 'Expiry Date is required' : null,
+                    cvv: !values.cvv ? 'CVV is required' : null,
+                    paymentType: !values.paymentType ? 'Payment Type is required' : null,
                 };
             }
-
             return {};
-        },
+        }
     });
-
-    const nextStep = () =>
-        setActive((current) => {
-            if (form.validate().hasErrors) {
-                return current;
-            }
-            return current < 3 ? current + 1 : current;
-        });
 
     const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
     return (
         <>
             <Grid>
-                <Grid.Col span={12}>
-                    <Text
-                        style={{
-                            fontWeight: "600",
-                            fontSize: "35px",
-                            color: "black",
-                            lineHeight: "82px",
-                            letterSpacing: "-0.5 px",
-                            display: "flex",
-                            justifyContent: "center",
-                        }}
-                    >
-                        UAE Visa Application Form
+                <Grid.Col span={12} mt="4rem">
+                    <Text mb="lg" style={{
+                        fontWeight: "600",
+                        fontSize: "35px",
+                        color: "black",
+                        lineHeight: "82px",
+                        letterSpacing: "-0.5 px",
+                        display: "flex",
+                        justifyContent: "center",
+                    }}>
+                        Online UAE Visa Application Form
                     </Text>
                 </Grid.Col>
                 <Grid.Col span={12}>
                     <Stepper active={active}>
-
-
                         <Stepper.Step label="First step" description="Application Form">
                             <Grid.Col span={12}>
                                 <Text style={{
@@ -162,20 +185,17 @@ export default function Options() {
                             </Grid.Col>
 
                             <Grid.Col span={12} style={{ display: "flex" }}>
-
                                 <TextInput style={{ width: "50%" }} mr="lg" label="Applicant Full Name" placeholder="Enter Full Name" withAsterisk {...form.getInputProps('username')} />
                                 <DateInput
                                     withAsterisk
                                     style={{ width: '50%' }}
                                     mr="lg"
                                     valueFormat="YYYY MMM DD"
-                                    label="Date input"
-                                    placeholder="Select DOB"
+                                    label="Arrival Date"
+                                    placeholder="Select Arrival Date"
                                     value={value}
                                     onChange={setValue}
                                 />
-
-
                             </Grid.Col>
                             <Grid.Col span={12} style={{ display: "flex" }}>
                                 <NumberInput style={{ width: "50%" }} mr="lg" label="Passport Number" placeholder="Enter Passport Number" withAsterisk {...form.getInputProps('passportnumber')} />
@@ -184,10 +204,10 @@ export default function Options() {
                                     style={{ width: '50%' }}
                                     mr="lg"
                                     valueFormat="YYYY MMM DD"
-                                    label="Date input"
-                                    placeholder="Select DOB"
-                                    value={value}
-                                    onChange={setValue}
+                                    label="Passport Expiry"
+                                    placeholder="Select Passport Expiry"
+                                    value={value2}
+                                    onChange={setValue2}
                                 />
                             </Grid.Col>
                             <Grid.Col span={12}>
@@ -195,25 +215,23 @@ export default function Options() {
                                     fontWeight: "700",
                                     fontSize: "22px",
                                     color: "black",
-
                                     display: "flex",
                                     justifyContent: "left",
                                 }}>Upload Documents
                                 </Text>
-
                                 <Text style={{
                                     fontWeight: "400",
                                     fontSize: "15px",
                                     color: "#858784",
                                     display: "flex",
                                     justifyContent: "left",
-                                }}>File accepted: pdf, jpg and png.
+                                }}>File accepted: pdf, jpg, and png.
                                 </Text>
                             </Grid.Col>
 
                             {/* ----------Upload Photos---------- */}
 
-                            <Grid.Col span={12} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Grid.Col span={{ base: 12, xs: 12, sm: 12, md: 6, lg: 12 }} style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 {CardData.cardData.map((card, index) => (
                                     <Card
                                         p="3rem"
@@ -277,7 +295,6 @@ export default function Options() {
                                             >
                                                 {card.title}
                                             </Text>
-
                                             <Text
                                                 mb="lg"
                                                 style={{
@@ -290,7 +307,6 @@ export default function Options() {
                                             >
                                                 {card.description}
                                             </Text>
-
                                             <Text
                                                 mt="sm"
                                                 mb="sm"
@@ -347,33 +363,59 @@ export default function Options() {
                                     </Card>
                                 ))}
                             </Grid.Col>
-
-
                         </Stepper.Step>
-
-
-
-
-
-
-
-
-
 
                         <Stepper.Step label="Second step" description="Personal information">
-                            <TextInput label="Name" placeholder="Name" {...form.getInputProps('name')} />
+                            <TextInput label="Your Full Name" placeholder="Your Full Name" {...form.getInputProps('name')} />
                             <TextInput mt="md" label="Email" placeholder="Email" {...form.getInputProps('email')} />
+                            <NumberInput mt="md" label="Mobile Number" placeholder="Enter Mobile Number" withAsterisk {...form.getInputProps('mobilenumber')} />
+                            <NumberInput mt="md" label="WhatsApp Number" placeholder="Enter WhatsApp Number" withAsterisk {...form.getInputProps('whatsappnumber')} />
                         </Stepper.Step>
 
-                        <Stepper.Step label="Final step" description="Social media">
-                            <TextInput label="Website" placeholder="Website" {...form.getInputProps('website')} />
-                            <TextInput
-                                mt="md"
-                                label="GitHub"
-                                placeholder="GitHub"
-                                {...form.getInputProps('github')}
-                            />
+                        <Stepper.Step label="Payment Method" description="Choose your payment method">
+                            <Grid.Col span={12}>
+                                <TextInput label="Credit Card Number" placeholder="Credit Card Number" {...form.getInputProps('creditCard')} />
+                            </Grid.Col>
+                            <Grid.Col span={12}>
+                                <TextInput label="Expiry Date" placeholder="MM/YYYY" {...form.getInputProps('expiryDate')} />
+                            </Grid.Col>
+                            <Grid.Col span={12}>
+                                <TextInput label="CVV" placeholder="CVV" {...form.getInputProps('cvv')} />
+                            </Grid.Col>
+                            <Grid.Col span={12}>
+                                <div>
+                                    <Text style={{ marginBottom: '0.5rem' }}>Payment Type:</Text>
+                                    <select {...form.getInputProps('paymentType')}>
+                                        <option value="">Select Payment Type</option>
+                                        <option value="creditCard">Credit Card</option>
+                                        <option value="paypal">PayPal</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </Grid.Col>
+
+                            <Group style={{ justifyContent: 'space-between', marginTop: '1rem' }}>
+                                {active !== 0 && (
+                                    <Button variant="default" onClick={() => setActive(active - 1)}>
+                                        Back
+                                    </Button>
+                                )}
+                                {active < 3 && (
+                                    <Button
+                                        style={{ backgroundColor: '#4c0066', color: 'white' }}
+                                        onClick={() => {
+                                            if (form.validate().hasErrors) {
+                                                return;
+                                            }
+                                            setActive(active + 1);
+                                        }}
+                                    >
+                                        Next Step
+                                    </Button>
+                                )}
+                            </Group>
                         </Stepper.Step>
+
                         <Stepper.Completed>
                             Completed! Form values:
                             <Code block mt="xl">
@@ -390,9 +432,7 @@ export default function Options() {
                         )}
                         {active !== 3 && <Button style={{ backgroundColor: "#4c0066" }} onClick={nextStep}>Next step</Button>}
                     </Group>
-
                 </Grid.Col>
-
             </Grid>
         </>
     );

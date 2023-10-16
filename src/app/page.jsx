@@ -1,13 +1,11 @@
 "use client";
 import React from 'react'
-import Header from './Components/Header'
-import Home from './Components/Home'
-import Visa from './Components/VisaOption'
-import Contact from './Components/Contact'
+import Header from './Components/Header';
+import Home from './Components/Home';
+import Visa from './Components/VisaOption';
 import Footer from './Components/Footer';
-import VisaForm from './Components/VisaForm';
-import Option from './Components/Options';
-
+import Form from './Components/Form';
+import Facilities from './Components/Facilities';
 import { Container } from "@mantine/core";
 
 export default function page() {
@@ -16,10 +14,9 @@ export default function page() {
       <Header />
       <Home />
       <Container size="lg">
+        <Facilities />
         <Visa />
-        <Option />
-        <VisaForm />
-        <Contact />
+        <Form />
       </Container>
       <Footer />
 

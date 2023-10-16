@@ -7,11 +7,11 @@ import {
 } from "@tabler/icons-react";
 
 const links = [
-    { link: "#", label: "Contact" },
-    { link: "#", label: "Privacy" },
+    { link: "/", label: "Apply" },
+    { link: "/Contact", label: "Contact" },
+    { link: "#", label: "Track" },
     { link: "#", label: "Blog" },
-    { link: "#", label: "Store" },
-    { link: "#", label: "Careers" },
+    { link: "#", label: "FAQ" },
 ];
 
 export default function Footer() {
@@ -67,9 +67,13 @@ export default function Footer() {
                         marginBottom: 0,
                         marginLeft: 0,
                         marginRight: 0,
+                        color: "white",
+
                     }}
                 >
-                    {items}
+                    expressvisadubai.com 2023 all rights reserved.
+
+
                 </Group>
 
                 <Group gap="xs" justify="flex-end" wrap="nowrap">

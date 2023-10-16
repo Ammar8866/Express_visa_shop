@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Text } from "@mantine/core";
+import { Grid, Text, Group, Button } from "@mantine/core";
 import Image from "next/image";
 import Photo from "public/travel2.jpg";
 
 export default function Home() {
     const [textIndex, setTextIndex] = useState(0);
+    const [hovered, setHovered] = useState(false);
+
+    const contactButtonStyles = {
+        backgroundColor: hovered ? 'purple' : 'yellow',
+        color: hovered ? 'white' : 'black',
+        fontWeight: 700,
+        transition: 'background-color 0.3s, color 0.3s', // Add the transition property
+    };
+
     const texts = [
         "100% Guaranteed Approval",
         "Get UAE Visa Approval in 12 hours",
@@ -16,12 +25,12 @@ export default function Home() {
         }, 2000);
 
         return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <>
-            <Grid mt="5rem" align="center" justify="center" style={{ height: "100vh" }}>
+            <Grid mt="5rem" align="center" justify="center" >
                 <Grid.Col span={12}>
                     <div style={{ position: "relative" }}>
                         <Image
@@ -44,7 +53,7 @@ export default function Home() {
                                 textAlign: "center",
                             }}
                         >
-                            <Text
+                            <Text mt="xl"
                                 style={{
                                     fontSize: "45px",
                                     fontWeight: 700,
@@ -71,6 +80,23 @@ export default function Home() {
                             >
                                 {texts[textIndex]}
                             </Text>
+                            <Group
+                                mt="2.5rem"
+                                style={{ display: "flex", justifyContent: "center" }}
+                            >
+                                <a href="/Contact">
+                                    <Button
+                                        size="xl"
+                                        radius="md"
+                                        type="submit"
+                                        style={contactButtonStyles}
+                                        onMouseEnter={() => setHovered(true)}
+                                        onMouseLeave={() => setHovered(false)}
+                                    >
+                                        Contact us
+                                    </Button>
+                                </a>
+                            </Group>
                         </div>
                     </div>
                 </Grid.Col>

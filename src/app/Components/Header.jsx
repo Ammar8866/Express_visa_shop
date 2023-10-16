@@ -4,11 +4,11 @@ import { GrVisa } from "react-icons/gr";
 import { TiThMenu } from "react-icons/ti";
 
 const links = [
-    { link: "/apply", label: "Apply" },
+    { link: "/", label: "Apply" },
     { link: "/track", label: "Track" },
     { link: "/faq", label: "FAQ" },
     { link: "/blog", label: "Blog" },
-    { link: "/contact", label: "Contact" },
+    { link: "/Contact", label: "Contact" },
 ];
 
 export default function Header() {
