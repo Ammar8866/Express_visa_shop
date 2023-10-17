@@ -22,24 +22,9 @@ export default function Visa() {
     return (
         <>
             <Grid>
-                <Grid.Col span={12} mt="4rem">
-                    <Text
-                        style={{
-                            fontWeight: '600',
-                            fontSize: '35px',
-                            color: 'black',
-                            lineHeight: '82px',
-                            letterSpacing: '-0.5px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        UAE Tourist Visa
-                    </Text>
-                </Grid.Col>
-
                 {VisaData.visaData.map((project, index) => (
                     <Grid.Col
+                        mt="xl"
                         span={{ base: 12, xs: 12, sm: 12, md: 6, lg: 4 }}
                         mb="md"
                         key={project.id}
@@ -49,6 +34,7 @@ export default function Visa() {
                             shadow="lg"
                             radius="lg"
                             style={{
+                                boxShadow: '2px 5px 20px #e9e9e9', // Add this line to set the shadow with the desired color
                                 transform: hoveredCards[index] ? 'scale(1.03)' : 'scale(1)',
                                 transition: 'transform 0.2s ease-in-out',
                             }}

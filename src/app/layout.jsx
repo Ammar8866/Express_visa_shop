@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
       <head>
         <ColorSchemeScript />
       </head>
-      <body style={{ backgroundColor: "#E7D9F7" }}>
+      <body style={{ backgroundColor: "#f7f7f7" }}>
         <MantineProvider>{children}</MantineProvider>
       </body>
     </html>

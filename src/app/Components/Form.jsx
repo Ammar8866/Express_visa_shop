@@ -1,24 +1,26 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useRef } from 'react';
-import { Stepper, Button, Group, TextInput, Code, Grid, Text, NumberInput, Card } from '@mantine/core';
-import { DateInput } from '@mantine/dates';
+import { Stepper, Button, Group, Code, Grid, Text, Card, Paper } from '@mantine/core';
+import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from '@mantine/form';
 import { GiPassport } from 'react-icons/gi';
 import { CgProfile } from 'react-icons/cg';
 import { LiaIdCard } from 'react-icons/lia';
 import { PiUploadSimpleBold } from 'react-icons/pi';
 import CardData from '../../../Data.json';
+import TextField from '@mui/material/TextField';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 export default function Form() {
     const [active, setActive] = useState(0);
-    const [value, setValue] = useState(null);
-    const [value2, setValue2] = useState(null);
     const [uploadedImages, setUploadedImages] = useState(new Array(CardData.cardData.length).fill(null));
     const [cardHoverStates, setCardHoverStates] = useState(new Array(CardData.cardData.length).fill(false));
     const fileInputs = useRef(Array(CardData.cardData.length).fill(null));
 
     const nextStep = () => {
-        // Validate the form fields
         const errors = form.validate().errors;
         const missingImages = uploadedImages.includes(null);
 
@@ -68,7 +70,7 @@ export default function Form() {
 
     const handleImageDelete = (index) => {
         const newImages = [...uploadedImages];
-        newImages[index] = null; // Set the image to null to remove it
+        newImages[index] = null;
         setUploadedImages(newImages);
     };
 
@@ -80,7 +82,6 @@ export default function Form() {
 
         console.log('File selected:', file);
 
-        // Check the file format and size
         const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
         if (!allowedFormats.includes(file.type)) {
             console.error('Invalid file format. Please upload a valid image or PDF file.');
@@ -99,7 +100,7 @@ export default function Form() {
         setUploadedImages(newImages);
 
         const newHoverStates = [...cardHoverStates];
-        newHoverStates[index] = false; // Reset hover state when the image is uploaded
+        newHoverStates[index] = false;
         setCardHoverStates(newHoverStates);
     };
 
@@ -111,6 +112,8 @@ export default function Form() {
             email: '',
             mobilenumber: '',
             whatsappnumber: '',
+            arrivalDate: null,
+            passportExpiry: null,
             creditCard: '',
             expiryDate: '',
             cvv: '',
@@ -119,27 +122,17 @@ export default function Form() {
         validate: (values) => {
             if (active === 0) {
                 return {
-                    username:
-                        values.username.trim().length < 6
-                            ? 'Username must include at least 6 characters'
-                            : null,
-                    passportnumber:
-                        values.passportnumber.trim().length < 6
-                            ? 'Passport Number must include at least 6 characters'
-                            : null,
+                    username: values.username.trim().length < 6 ? 'Username must include at least 6 characters' : null,
+                    passportnumber: values.passportnumber.trim().length < 6 ? 'Passport Number must include at least 6 characters' : null,
+                    arrivalDate: values.arrivalDate ? null : 'Arrival Date is required',
+                    passportExpiry: values.passportExpiry ? null : 'Passport Expiry Date is required',
                 };
             } else if (active === 1) {
                 return {
-                    name: values.name.trim().length < 2 ? 'Name must include at least 2 characters' : null,
+                    name: values.name.trim().length < 3 ? 'Name must include at least 3 characters' : null,
                     email: /^\S+@\S+$/.test(values.email) ? null : 'Invalid email',
-                    mobilenumber:
-                        values.mobilenumber.trim().length < 6
-                            ? 'Mobile Number must include at least 6 characters'
-                            : null,
-                    whatsappnumber:
-                        values.whatsappnumber.trim().length < 6
-                            ? 'WhatsApp Number must include at least 6 characters'
-                            : null,
+                    mobilenumber: values.mobilenumber.trim().length < 6 ? 'Mobile Number must include at least 6 characters' : null,
+                    whatsappnumber: values.whatsappnumber.trim().length < 6 ? 'WhatsApp Number must include at least 6 characters' : null,
                 };
             } else if (active === 2) {
                 return {
@@ -150,7 +143,7 @@ export default function Form() {
                 };
             }
             return {};
-        }
+        },
     });
 
     const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
@@ -159,73 +152,156 @@ export default function Form() {
         <>
             <Grid>
                 <Grid.Col span={12} mt="4rem">
-                    <Text mb="lg" style={{
-                        fontWeight: "600",
-                        fontSize: "35px",
-                        color: "black",
-                        lineHeight: "82px",
-                        letterSpacing: "-0.5 px",
-                        display: "flex",
-                        justifyContent: "center",
-                    }}>
+                    <Text
+                        mb="lg"
+                        style={{
+                            fontWeight: '700',
+                            fontSize: '40px',
+                            color: 'black',
+                            lineHeight: '82px',
+                            letterSpacing: '-0.5 px',
+                            display: 'flex',
+                            justifyContent: 'center',
+                        }}
+                    >
                         Online UAE Visa Application Form
                     </Text>
                 </Grid.Col>
                 <Grid.Col span={12}>
                     <Stepper active={active}>
                         <Stepper.Step label="First step" description="Application Form">
-                            <Grid.Col span={12}>
-                                <Text style={{
-                                    fontWeight: "700",
-                                    fontSize: "22px",
-                                    color: "black",
-                                    display: "flex",
-                                    justifyContent: "left",
-                                }}>Applicant 1</Text>
+                            <Grid.Col span={12} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Text
+                                    mt="md"
+                                    style={{
+                                        fontWeight: '700',
+                                        fontSize: '22px',
+                                        color: 'black',
+                                        display: 'flex',
+                                        justifyContent: 'left',
+                                    }}
+                                >
+                                    Applicant 1
+                                </Text>
                             </Grid.Col>
 
-                            <Grid.Col span={12} style={{ display: "flex" }}>
-                                <TextInput style={{ width: "50%" }} mr="lg" label="Applicant Full Name" placeholder="Enter Full Name" withAsterisk {...form.getInputProps('username')} />
-                                <DateInput
-                                    withAsterisk
-                                    style={{ width: '50%' }}
-                                    mr="lg"
-                                    valueFormat="YYYY MMM DD"
-                                    label="Arrival Date"
-                                    placeholder="Select Arrival Date"
-                                    value={value}
-                                    onChange={setValue}
+                            <Grid.Col span={12} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <TextField
+                                    style={{ width: '525px' }}
+                                    id="standard-basic"
+                                    variant="standard"
+                                    label="Applicant Full Name"
+                                    placeholder="Enter Full Name"
+                                    {...form.getInputProps('username')}
+                                    error={form.errors.username}
+                                    helperText={form.errors.username}
+                                />
+
+                                <TextField
+                                    style={{ width: '525px' }}
+                                    id="standard-basic"
+                                    variant="standard"
+                                    label="Passport Number"
+                                    placeholder="Enter Passport Number"
+                                    {...form.getInputProps('passportnumber')}
+                                    error={form.errors.passportnumber}
+                                    helperText={form.errors.passportnumber}
                                 />
                             </Grid.Col>
-                            <Grid.Col span={12} style={{ display: "flex" }}>
-                                <NumberInput style={{ width: "50%" }} mr="lg" label="Passport Number" placeholder="Enter Passport Number" withAsterisk {...form.getInputProps('passportnumber')} />
-                                <DateInput
-                                    withAsterisk
-                                    style={{ width: '50%' }}
-                                    mr="lg"
-                                    valueFormat="YYYY MMM DD"
-                                    label="Passport Expiry"
-                                    placeholder="Select Passport Expiry"
-                                    value={value2}
-                                    onChange={setValue2}
-                                />
+                            <Grid.Col span={12} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DemoContainer components={['DatePicker']}>
+                                        <DatePicker
+                                            label="Arrival Date"
+                                            id="arrival-date"
+                                            slotProps={{ textField: { variant: 'standard' } }}
+                                            sx={{
+                                                height: '50px',
+                                                width: '525px',
+                                                overflow: 'hidden',
+                                                '& .MuiIconButton-root': {
+                                                    marginRight: '5px',
+                                                },
+                                            }}
+                                            InputProps={{
+                                                style: {
+                                                    backgroundColor: 'lightgray',
+                                                    color: 'black',
+                                                },
+                                            }}
+                                            InputLabelProps={{
+                                                style: {
+                                                    color: 'blue',
+                                                    position: 'static',
+                                                    transform: 'none',
+                                                },
+                                            }}
+                                            value={form.values.arrivalDate}
+                                            onChange={(date) => form.setFieldValue('arrivalDate', date)}
+                                            error={form.errors.arrivalDate}
+                                            helperText={form.errors.arrivalDate}
+                                        />
+                                    </DemoContainer>
+                                </LocalizationProvider>
+
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DemoContainer components={['DatePicker']}>
+                                        <DatePicker
+                                            label="Passport Expiry"
+                                            id="passport-expiry"
+                                            slotProps={{ textField: { variant: 'standard' } }}
+                                            sx={{
+                                                height: '50px',
+                                                width: '525px',
+                                                overflow: 'hidden',
+                                                '& .MuiIconButton-root': {
+                                                    marginRight: '5px',
+                                                },
+                                            }}
+                                            InputProps={{
+                                                style: {
+                                                    backgroundColor: 'lightgray',
+                                                    color: 'black',
+                                                },
+                                            }}
+                                            InputLabelProps={{
+                                                style: {
+                                                    color: 'blue',
+                                                    position: 'static',
+                                                    transform: 'none',
+                                                },
+                                            }}
+                                            value={form.values.passportExpiry}
+                                            onChange={(date) => form.setFieldValue('passportExpiry', date)}
+                                            error={form.errors.passportExpiry}
+                                            helperText={form.errors.passportExpiry}
+                                        />
+                                    </DemoContainer>
+                                </LocalizationProvider>
                             </Grid.Col>
                             <Grid.Col span={12}>
-                                <Text mt="xl" style={{
-                                    fontWeight: "700",
-                                    fontSize: "22px",
-                                    color: "black",
-                                    display: "flex",
-                                    justifyContent: "left",
-                                }}>Upload Documents
+                                <Text
+                                    mt="xl"
+                                    style={{
+                                        fontWeight: '700',
+                                        fontSize: '22px',
+                                        color: 'black',
+                                        display: 'flex',
+                                        justifyContent: 'left',
+                                    }}
+                                >
+                                    Upload Documents
                                 </Text>
-                                <Text style={{
-                                    fontWeight: "400",
-                                    fontSize: "15px",
-                                    color: "#858784",
-                                    display: "flex",
-                                    justifyContent: "left",
-                                }}>File accepted: pdf, jpg, and png.
+                                <Text
+                                    style={{
+                                        fontWeight: '400',
+                                        fontSize: '15px',
+                                        color: '#858784',
+                                        display: 'flex',
+                                        justifyContent: 'left',
+                                    }}
+                                >
+                                    File accepted: pdf, jpg, and png.
                                 </Text>
                             </Grid.Col>
 
@@ -335,7 +411,7 @@ export default function Form() {
                                                     onClick={() => {
                                                         console.log('Upload button clicked for index:', index);
                                                         console.log('File input:', fileInputs[index]);
-                                                        fileInputs[index].click(); // Trigger the file input
+                                                        fileInputs[index].click();
                                                     }}
                                                 >
                                                     Upload{' '}
@@ -348,7 +424,6 @@ export default function Form() {
                                                 </Button>
                                             </Group>
 
-                                            {/* Add the input for image upload here */}
                                             <input
                                                 type="file"
                                                 accept=".jpg, .jpeg, .png, .pdf"
@@ -366,26 +441,100 @@ export default function Form() {
                         </Stepper.Step>
 
                         <Stepper.Step label="Second step" description="Personal information">
-                            <TextInput label="Your Full Name" placeholder="Your Full Name" {...form.getInputProps('name')} />
-                            <TextInput mt="md" label="Email" placeholder="Email" {...form.getInputProps('email')} />
-                            <NumberInput mt="md" label="Mobile Number" placeholder="Enter Mobile Number" withAsterisk {...form.getInputProps('mobilenumber')} />
-                            <NumberInput mt="md" label="WhatsApp Number" placeholder="Enter WhatsApp Number" withAsterisk {...form.getInputProps('whatsappnumber')} />
+                            <Text
+                                mt="md"
+                                style={{
+                                    fontWeight: '700',
+                                    fontSize: '22px',
+                                    color: 'black',
+                                    display: 'flex',
+                                    justifyContent: 'left',
+                                }}
+                            >
+                                Personal Information
+                            </Text>
+                            <TextField
+                                id="standard-basic"
+                                style={{ width: '48%', marginRight: '4%', marginTop: '10px' }}
+                                variant="standard"
+                                label="Your Full Name"
+                                placeholder="Your Full Name"
+                                {...form.getInputProps('name')}
+                                error={form.errors.name}
+                                helperText={form.errors.name}
+                            />
+                            <TextField
+                                id="standard-basic"
+                                style={{ width: '48%', marginTop: '10px' }}
+                                variant="standard"
+                                label="Email"
+                                placeholder="Email"
+                                {...form.getInputProps('email')}
+                                error={form.errors.email}
+                                helperText={form.errors.email}
+                            />
+                            <TextField
+                                id="standard-basic"
+                                style={{ width: '48%', marginRight: '4%', marginTop: '25px' }}
+                                variant="standard"
+                                label="Mobile Number"
+                                placeholder="Enter Mobile Number"
+                                withAsterisk
+                                {...form.getInputProps('mobilenumber')}
+                                error={form.errors.mobilenumber}
+                                helperText={form.errors.mobilenumber}
+                            />
+                            <TextField
+                                id="standard-basic"
+                                style={{ width: '48%', marginTop: '25px' }}
+                                variant="standard"
+                                label="WhatsApp Number"
+                                placeholder="Enter WhatsApp Number"
+                                withAsterisk
+                                {...form.getInputProps('whatsappnumber')}
+                                error={form.errors.whatsappnumber}
+                                helperText={form.errors.whatsappnumber}
+                            />
                         </Stepper.Step>
 
                         <Stepper.Step label="Payment Method" description="Choose your payment method">
                             <Grid.Col span={12}>
-                                <TextInput label="Credit Card Number" placeholder="Credit Card Number" {...form.getInputProps('creditCard')} />
+                                <TextField
+                                    id="standard-basic"
+                                    variant="standard"
+                                    label="Credit Card Number"
+                                    placeholder="Credit Card Number"
+                                    {...form.getInputProps('creditCard')}
+                                    error={form.errors.creditCard}
+                                    helperText={form.errors.creditCard}
+                                />
                             </Grid.Col>
                             <Grid.Col span={12}>
-                                <TextInput label="Expiry Date" placeholder="MM/YYYY" {...form.getInputProps('expiryDate')} />
+                                <TextField
+                                    id="standard-basic"
+                                    variant="standard"
+                                    label="Expiry Date"
+                                    placeholder="MM/YYYY"
+                                    {...form.getInputProps('expiryDate')}
+                                    error={form.errors.expiryDate}
+                                    helperText={form.errors.expiryDate}
+                                />
                             </Grid.Col>
                             <Grid.Col span={12}>
-                                <TextInput label="CVV" placeholder="CVV" {...form.getInputProps('cvv')} />
+                                <TextField
+                                    id="standard-basic"
+                                    variant="standard"
+                                    label="CVV"
+                                    placeholder="CVV"
+                                    {...form.getInputProps('cvv')}
+                                    error={form.errors.cvv}
+                                    helperText={form.errors.cvv}
+                                />
                             </Grid.Col>
                             <Grid.Col span={12}>
                                 <div>
                                     <Text style={{ marginBottom: '0.5rem' }}>Payment Type:</Text>
-                                    <select {...form.getInputProps('paymentType')}>
+                                    <select {...form.getInputProps('paymentType')} error={form.errors.paymentType}>
                                         <option value="">Select Payment Type</option>
                                         <option value="creditCard">Credit Card</option>
                                         <option value="paypal">PayPal</option>
@@ -430,10 +579,12 @@ export default function Form() {
                                 Back
                             </Button>
                         )}
-                        {active !== 3 && <Button style={{ backgroundColor: "#4c0066" }} onClick={nextStep}>Next step</Button>}
+                        {active !== 3 && <Button style={{ backgroundColor: "#4c0066" }} onClick={nextStep} >Next step</Button>}
                     </Group>
                 </Grid.Col>
             </Grid>
         </>
     );
 }
+
+
