@@ -19,6 +19,13 @@ export default function Visa() {
         setHoveredCards(newHoveredCards);
     };
 
+    const handleProceedClick = () => {
+        const formElement = document.getElementById('form');
+        if (formElement) {
+            formElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <>
             <Grid>
@@ -128,15 +135,17 @@ export default function Visa() {
                                         }}
                                         onMouseEnter={() => setHoveredButton(index)}
                                         onMouseLeave={() => setHoveredButton(null)}
+                                        onClick={handleProceedClick}
                                     >
                                         Proceed
                                     </Button>
                                 </Group>
+
                             </Card.Section>
                         </Card>
                     </Grid.Col>
                 ))}
-            </Grid>
+            </Grid >
         </>
     );
 }

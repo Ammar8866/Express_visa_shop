@@ -44,16 +44,18 @@ export default function Footer() {
             <div
                 style={{
                     display: "flex",
+                    flexWrap: "wrap",
                     justifyContent: "space-between",
                     alignItems: "center",
                     padding: `${rem(16)} ${rem(16)}`,
                     flexDirection: "row",
                 }}
             >
+
                 <Group
                     style={{
                         marginTop: 0,
-                        marginBottom: 0,
+                        marginBottom: 5,
                         marginLeft: 0,
                         marginRight: 0,
                     }}
@@ -64,7 +66,7 @@ export default function Footer() {
                 <Group
                     style={{
                         marginTop: 0,
-                        marginBottom: 0,
+                        marginBottom: 5,
                         marginLeft: 0,
                         marginRight: 0,
                         color: "white",

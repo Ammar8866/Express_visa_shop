@@ -15,7 +15,7 @@ export default function Facilities() {
                         }}
                     >
                         <Group ml="2rem" mr="2rem" style={{ display: "flex", justifyContent: "space-between" }}>
-                            <Grid.Col span={3} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginRight: "1rem" }}>
+                            <Grid.Col  span={{ base: 12, xs: 12, sm: 12, md: 6, lg: 3 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginRight: "1rem" }}>
                                 <FaPeopleRoof size="60px" />
                                 <Text mt="xs" style={{
                                     fontWeight: "700",
@@ -36,7 +36,7 @@ export default function Facilities() {
                                     We are dedicated to serving our clients with excellence, consistently delivering the highest quality of service possible.</Text>
                             </Grid.Col>
                             <Divider size="sm" orientation="vertical" />
-                            <Grid.Col span={3} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: "10px" }}>
+                            <Grid.Col  span={{ base: 12, xs: 12, sm: 12, md: 6, lg: 3 }}style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: "10px" }}>
                                 <FaHandshake size="60px" />
                                 <Text mt="xs" style={{
                                     fontWeight: "700",
@@ -57,7 +57,7 @@ export default function Facilities() {
                                     We take immense pride in our meticulous attention to detail, ensuring that our visa applications set the gold standard for professionalism.</Text>
                             </Grid.Col>
                             <Divider size="sm" orientation="vertical" />
-                            <Grid.Col span={3} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                            <Grid.Col  span={{ base: 12, xs: 12, sm: 12, md: 6, lg: 3 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                                 <FaScaleBalanced size="60px" />
                                 <Text mt="xs" style={{
                                     fontWeight: "700",

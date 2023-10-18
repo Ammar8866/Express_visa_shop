@@ -32,18 +32,21 @@
 
   "cardData": [
     {
+      "id": 1,
       "title": "Passport",
       "description": "Maximum File Size: 4MB",
       "errorMessage": "Please Upload a Photo",
       "icon": "GiPassport"
     },
     {
+      "id": 2,
       "title": "Photo",
       "description": "Maximum File Size: 4MB",
       "errorMessage": "Please Upload a Photo",
       "icon": "CgProfile"
     },
     {
+      "id": 3,
       "title": "ID Card",
       "description": "Maximum File Size: 4MB",
       "errorMessage": "Please Upload a Photo",

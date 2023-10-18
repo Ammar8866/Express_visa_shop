@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { Grid, Text } from '@mantine/core';
 
@@ -16,6 +15,7 @@ export default function TitleHeading() {
         }, 4000);
 
         return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const textAnimation = {
@@ -45,11 +45,12 @@ export default function TitleHeading() {
                 `}
             </style>
             <Grid>
-                <Grid.Col span={12} mt="8rem">
+                <Grid.Col span={12} mt="10rem">
                     <Text
                         style={{
                             fontWeight: '700',
-                            fontSize: '55px',
+                            fontSize: '4vw', // Adjust font size based on viewport width
+                            minWidth: '20px', // Set a minimum font size in pixels
                             color: 'black',
                             display: 'flex',
                             justifyContent: 'left',
@@ -63,7 +64,8 @@ export default function TitleHeading() {
                         pr="sm"
                         style={{
                             fontWeight: '600',
-                            fontSize: '30px',
+                            fontSize: '2vw', // Adjust font size based on viewport width
+                            minWidth: '16px', // Set a minimum font size in pixels
                             color: 'red',
                             display: 'flex',
                             justifyContent: 'left',
@@ -75,7 +77,8 @@ export default function TitleHeading() {
                         style={{
                             ...textAnimation,
                             fontWeight: '600',
-                            fontSize: '30px',
+                            fontSize: '2vw', // Adjust font size based on viewport width
+                            minWidth: '16px', // Set a minimum font size in pixels
                             color: 'black',
                             display: 'flex',
                             justifyContent: 'left',
