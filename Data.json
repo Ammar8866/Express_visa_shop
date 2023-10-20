@@ -2,30 +2,30 @@
   "visaData": [
     {
       "id": 1,
-      "title": "96 Hours",
+      "title": "96 Hours Visa",
       "description": "SINGLE VISA ENTRY",
-      "price": "90",
+      "price": "155",
       "text": "Processing Time 48 hours."
     },
     {
       "id": 2,
-      "title": "14 Days",
+      "title": "14 Days Visa",
       "description": "SINGLE VISA ENTRY",
-      "price": "160",
+      "price": "165",
       "text": "Processing Time 48 hours."
     },
     {
       "id": 3,
-      "title": "30 Days",
+      "title": "30 Days Visa",
       "description": "SINGLE VISA ENTRY",
-      "price": "195",
+      "price": "180",
       "text": "Processing Time 48 hours."
     },
     {
       "id": 4,
-      "title": "90 Days",
+      "title": "60 Days Visa",
       "description": "SINGLE VISA ENTRY",
-      "price": "340",
+      "price": "475",
       "text": "Processing Time 48 hours."
     }
   ],

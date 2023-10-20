@@ -1,11 +1,34 @@
-import React, { useState } from 'react';
-import { Grid, Text, Card, Container, Group, Button, Divider } from '@mantine/core';
+import React, { useState, useEffect } from 'react';
+import { Grid, Text, Card, Container, Group, Button, Divider, Paper } from '@mantine/core';
 import VisaData from '../../../Data.json';
+import axios from 'axios';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
-export default function Visa() {
+export default function Visa({ onChange }) {
     // Maintain hover state for each card and button
     const [hoveredCards, setHoveredCards] = useState(new Array(VisaData.visaData.length).fill(false));
     const [hoveredButton, setHoveredButton] = useState(null);
+    const [countries, setCountries] = useState([]);
+    const [selectedCountry, setSelectedCountry] = useState('');
+    const [isHovered, setIsHovered] = useState(false);
+
+    useEffect(() => {
+        // Fetch the list of countries
+        axios.get('https://restcountries.com/v3.1/all')
+            .then((response) => {
+                setCountries(response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching countries:', error);
+            });
+    }, []);
+
+    const handleCountryChange = (event) => {
+        setSelectedCountry(event.target.value);
+        onChange(event.target.value);
+    };
+
+
 
     const handleCardHover = (cardId) => {
         const newHoveredCards = [...hoveredCards];
@@ -26,17 +49,94 @@ export default function Visa() {
         }
     };
 
+    const handleProceedNationality = () => {
+        const formElement = document.getElementById('Options');
+        if (formElement) {
+            formElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+
+    const buttonStyles = {
+
+        borderRadius: "8px",
+        height: "55px",
+        backgroundColor: isHovered ? "red" : "#2d57a1",
+        color: "white",
+        cursor: "pointer",
+        transition: "background-color 0.3s ease",
+    };
+
+    const handleButtonMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    const handleButtonMouseLeave = () => {
+        setIsHovered(false);
+    };
+
+
+
+
     return (
         <>
+
             <Grid>
+                <Grid.Col span={8}>
+                    <Paper p="sm" mt="3rem" radius="md" style={{
+                        boxShadow: '2px 5px 20px #e9e9e9',
+                    }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
+                            <FormControl variant="standard" style={{ minWidth: '80%', marginBottom: "18px" }}>
+                                <InputLabel id="nationality-label" style={{ fontSize: '18px' }}>Nationality</InputLabel>
+                                <Select
+                                    labelId="nationality-label"
+                                    id="nationality-select"
+                                    value={selectedCountry}
+                                    onChange={handleCountryChange}
+                                    label="Nationality"
+                                >
+                                    <MenuItem value="">
+                                        <em>Select a country</em>
+                                    </MenuItem>
+                                    {countries.map((country) => (
+                                        <MenuItem key={country.cca2} value={country.cca2}>
+                                            {country.name.common}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+
+                            <Button
+                                mt="6px"
+                                onClick={handleProceedNationality}
+                                style={buttonStyles}
+                                onMouseEnter={() => handleButtonMouseEnter()}
+                                onMouseLeave={() => handleButtonMouseLeave()}
+                            >
+                                Continue
+                            </Button>
+                        </div>
+                    </Paper>
+                </Grid.Col>
+            </Grid>
+
+
+            <div id="Options"></div>
+            <Divider color='yellow' size="sm" mt="3rem" />
+
+
+            <Grid>
+
                 {VisaData.visaData.map((project, index) => (
                     <Grid.Col
-                        mt="xl"
+                        mt="3rem"
                         span={{ base: 12, xs: 12, sm: 12, md: 6, lg: 4 }}
                         mb="md"
                         key={project.id}
                         p="md"
                     >
+
                         <Card
                             shadow="lg"
                             radius="lg"
@@ -48,7 +148,9 @@ export default function Visa() {
                             onMouseEnter={() => handleCardHover(index)}
                             onMouseLeave={() => handleCardLeave(index)}
                         >
+
                             <Card.Section>
+
                                 <Text
                                     mt="2rem"
                                     style={{
@@ -62,12 +164,13 @@ export default function Visa() {
                                     {project.title}
                                 </Text>
 
+
                                 <Text
                                     mb="xl"
                                     style={{
                                         fontWeight: '400',
-                                        fontSize: '20px',
-                                        color: 'black',
+                                        fontSize: '18px',
+                                        color: '#bfbdc4',
                                         display: 'flex',
                                         justifyContent: 'center',
                                     }}
@@ -143,6 +246,7 @@ export default function Visa() {
 
                             </Card.Section>
                         </Card>
+
                     </Grid.Col>
                 ))}
             </Grid >

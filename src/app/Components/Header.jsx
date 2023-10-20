@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from "react";
 import { Grid, Paper, Text, Button, Group, Drawer, Divider, Center } from "@mantine/core";
 import { GrVisa } from "react-icons/gr";
@@ -13,13 +14,14 @@ const links = [
 
 export default function Header() {
     const [hoveredButton, setHoveredButton] = useState(null);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [isMobile, setIsMobile] = useState(false);
     const [isDrawerOpen, setDrawerOpen] = useState(false);
     const [headerBackground, setHeaderBackground] = useState("#20519c"); // Initial background color
 
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth <= 1065);
+            setIsMobile(window.innerWidth <= 1240);
         };
 
         const handleScroll = () => {
@@ -92,6 +94,28 @@ export default function Header() {
         color: headerBackground === "#4C0066" ? "yellow" : "white",
     };
 
+    // Define your WhatsApp number
+    const whatsappNumber = "+923164568147";
+
+    // Function to open WhatsApp Web
+    const openWhatsApp = () => {
+        const url = `https://web.whatsapp.com/send?phone=${whatsappNumber}`;
+        window.open(url, "_blank");
+    };
+
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     return (
         <>
             <Paper
@@ -105,12 +129,10 @@ export default function Header() {
                 }}
             >
                 <Grid p="xs">
-                    <Grid.Col span={6}>
+                    <Grid.Col span={4}>
                         <div style={{ display: "flex" }}>
                             <div style={visaIconStyle}>
-                                <GrVisa size="65px"
-                                // color="yellow"
-                                />
+                                <GrVisa size="65px" />
                             </div>
                             <div style={titleStyle}>
                                 <Text style={{
@@ -132,8 +154,9 @@ export default function Header() {
                             </div>
                         </div>
                     </Grid.Col>
+
                     <Grid.Col
-                        span={6}
+                        span={8}
                         style={{ display: "flex", justifyContent: "right", ...menuStyle }}
                     >
                         {isMobile ? (
@@ -152,8 +175,51 @@ export default function Header() {
                         ) : (
                             <Group gap={5} visibleFrom="xs">
                                 {items}
+                                {/* Render the WhatsApp button on large screens */}
+                                {!isMobile && (
+                                    <Button
+                                        mr="lg"
+                                        onClick={openWhatsApp}
+                                        style={{
+                                            backgroundColor: "transparent",
+                                            border: "none",
+                                            cursor: "pointer",
+                                            display: "flex",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <img
+                                            src="/whatsapp.png" // Specify the path to your image here
+                                            alt="WhatsApp Icon"
+                                            style={{
+                                                width: "35px",
+                                                height: "35px",
+                                            }}
+                                        />
+                                    </Button>
+                                )}
                             </Group>
                         )}
+                        <Button
+                            mt="xs"
+                            mr="sm"
+                            onClick={openWhatsApp}
+                            style={{
+                                border: "2px solid white",
+                                height: "50px",
+                                backgroundColor: hoveredButton === links.label ? "yellow" : "transparent",
+                                color: hoveredButton === links.label ? "black" : "white",
+                                cursor: "pointer",
+                                display: windowWidth <= 600 ? 'none' : 'flex',
+                                alignItems: "center",
+                            }}
+                            onMouseEnter={() => setHoveredButton(links.label)}
+                            onMouseLeave={() => setHoveredButton(null)}
+                        >
+                            Express Visa in 8 hours
+                        </Button>
+
+
                     </Grid.Col>
                 </Grid>
             </Paper>
@@ -195,6 +261,21 @@ export default function Header() {
                                 )}
                             </React.Fragment>
                         ))}
+                        {/* Add WhatsApp image inside the drawer if isMobile is true */}
+                        <Grid.Col span={12}>
+                            <Divider mb="xl" />
+                            <Center>
+                                <img
+                                    src="/whatsapp.png" // Specify the path to your WhatsApp image here
+                                    alt="WhatsApp Icon"
+                                    style={{
+                                        width: "35px",
+                                        height: "35px",
+                                    }}
+                                />
+                            </Center>
+                        </Grid.Col>
+
                     </Grid>
                 </Drawer>
             )}

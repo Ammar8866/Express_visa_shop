@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useRef } from 'react';
-import { Stepper, Button, Group, Code, Grid, Text, Card, Paper } from '@mantine/core';
+import {
+    Stepper, Button, Group, Code, Grid, Text, Card, Paper, Divider
+} from '@mantine/core';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from '@mantine/form';
 import { GiPassport } from 'react-icons/gi';
@@ -15,6 +17,46 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 
+import {
+    Icon,
+    Typography,
+    Box,
+} from "@mui/material";
+
+
+import { styled } from "@mui/system"; // Import styled from @mui/system
+
+const useStyles = styled((theme) => ({
+    root: {
+        backgroundColor: "#eee",
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+    },
+    card: {
+        display: "flex",
+        flexDirection: "column",
+    },
+    cardContent: {
+        flex: "1 0 auto",
+    },
+    cardMedia: {
+        width: "65px",
+        height: "65px",
+    },
+    cardActions: {
+        display: "flex",
+        justifyContent: "space-between",
+    },
+    totalAmount: {
+        display: "flex",
+        justifyContent: "space-between",
+        marginTop: theme.spacing(2),
+    },
+}));
+
+
+
 // import { checkout } from '../../../checkout';
 
 
@@ -27,14 +69,27 @@ export default function Form() {
     const [uploadedImages, setUploadedImages] = useState(new Array(CardData.cardData.length).fill(null));
     const [cardHoverStates, setCardHoverStates] = useState(new Array(CardData.cardData.length).fill(false));
     const fileInputs = useRef(Array(CardData.cardData.length).fill(null));
+    const [isHovered, setIsHovered] = useState(false);
+    const classes = useStyles();
 
 
-    // const handlePayment = async () => {
-    //     // Call the checkout function to initiate the payment process
-    //     await checkout({
-    //         lineItems: [{ price: "price_1O2YbrJqOuwJ2v0irNs4yFVy", quantity: 1 }]
-    //     });
-    // };
+    const buttonStyle2 = {
+
+        borderRadius: "8px",
+        backgroundColor: isHovered ? "red" : "#4c0066",
+        color: "white",
+        cursor: "pointer",
+        transition: "background-color 0.3s ease",
+    };
+
+    const handleButtonMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    const handleButtonMouseLeave = () => {
+        setIsHovered(false);
+    };
+
 
     const nextStep = () => {
         const errors = form.validate().errors;
@@ -172,10 +227,11 @@ export default function Form() {
                 <Grid.Col span={12} mt="4rem">
                     <div id="form">
                         <Text
+                            ta="center"
                             mb="lg"
                             style={{
                                 fontWeight: '700',
-                                fontSize: '40px',
+                                fontSize: '38px',
                                 color: 'black',
                                 lineHeight: '82px',
                                 letterSpacing: '-0.5 px',
@@ -497,206 +553,257 @@ export default function Form() {
                                         Personal Information
                                     </Text>
                                 </Grid.Col>
-                                <TextField
-                                    id="standard-basic"
-                                    style={{ width: '48%', marginRight: '4%', marginTop: '10px' }}
-                                    variant="standard"
-                                    label="Your Full Name"
-                                    placeholder="Your Full Name"
-                                    {...form.getInputProps('name')}
-                                    error={form.errors.name}
-                                    helperText={form.errors.name}
-                                />
-                                <TextField
-                                    id="standard-basic"
-                                    style={{ width: '48%', marginTop: '10px' }}
-                                    variant="standard"
-                                    label="Email"
-                                    placeholder="Email"
-                                    {...form.getInputProps('email')}
-                                    error={form.errors.email}
-                                    helperText={form.errors.email}
-                                />
-                                <TextField
-                                    id="standard-basic"
-                                    style={{ width: '48%', marginRight: '4%', marginTop: '25px' }}
-                                    variant="standard"
-                                    label="Mobile Number"
-                                    placeholder="Enter Mobile Number"
-                                    withAsterisk
-                                    {...form.getInputProps('mobilenumber')}
-                                    error={form.errors.mobilenumber}
-                                    helperText={form.errors.mobilenumber}
-                                />
-                                <TextField
-                                    id="standard-basic"
-                                    style={{ width: '48%', marginTop: '25px' }}
-                                    variant="standard"
-                                    label="WhatsApp Number"
-                                    placeholder="Enter WhatsApp Number"
-                                    withAsterisk
-                                    {...form.getInputProps('whatsappnumber')}
-                                    error={form.errors.whatsappnumber}
-                                    helperText={form.errors.whatsappnumber}
-                                />
+                                <Grid style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <Grid.Col span={{ lg: 6 }}>
+                                        <TextField
+                                            id="standard-basic"
+                                            style={{ width: '500px', marginTop: '10px' }}
+                                            variant="standard"
+                                            label="Your Full Name"
+                                            placeholder="Your Full Name"
+                                            {...form.getInputProps('name')}
+                                            error={form.errors.name}
+                                            helperText={form.errors.name}
+                                        />
+                                    </Grid.Col>
+                                    <Grid.Col span={{ lg: 6 }}>
+                                        <TextField
+                                            id="standard-basic"
+                                            style={{ width: '500px', marginTop: '10px' }}
+                                            variant="standard"
+                                            label="Email"
+                                            placeholder="Email"
+                                            {...form.getInputProps('email')}
+                                            error={form.errors.email}
+                                            helperText={form.errors.email}
+                                        />
+                                    </Grid.Col>
+                                </Grid>
+                                <Grid style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <Grid.Col span={{ lg: 6 }}>
+                                        <TextField
+                                            id="standard-basic"
+                                            style={{ width: '500px', marginTop: '25px' }}
+                                            variant="standard"
+                                            label="Mobile Number"
+                                            placeholder="Enter Mobile Number"
+                                            withAsterisk
+                                            {...form.getInputProps('mobilenumber')}
+                                            error={form.errors.mobilenumber}
+                                            helperText={form.errors.mobilenumber}
+                                        />
+                                    </Grid.Col>
+                                    <Grid.Col span={{ lg: 6 }}>
+                                        <TextField
+                                            id="standard-basic"
+                                            style={{ width: '500px', marginTop: '25px' }}
+                                            variant="standard"
+                                            label="WhatsApp Number"
+                                            placeholder="Enter WhatsApp Number"
+                                            withAsterisk
+                                            {...form.getInputProps('whatsappnumber')}
+                                            error={form.errors.whatsappnumber}
+                                            helperText={form.errors.whatsappnumber}
+                                        />
+                                    </Grid.Col>
+                                </Grid>
                             </Stepper.Step>
 
 
                             <Stepper.Step label="Payment Method" description="Choose your payment method">
-                                <Grid.Col span={6}>
-                                    <Text
-                                        mt="md"
-                                        style={{
-                                            fontWeight: '700',
-                                            fontSize: '22px',
-                                            color: 'black',
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                        }}
-                                    >
-                                        Payment Details
-                                    </Text>
-                                    <Text
-
-                                        style={{
-                                            fontWeight: '400',
-                                            fontSize: '15px',
-                                            color: 'black',
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                        }}
-                                    >
-                                        All transactions are secure and encrypted.
-                                    </Text>
-
-                                </Grid.Col>
-
-
-                                <Grid.Col span={6} p="xl" >
-                                    <Grid.Col span={12}>
-                                        <TextField
-                                            id="standard-basic"
-                                            variant="standard"
-
-                                            style={{ width: '100%', display: "flex", justifyContent: "center" }}
-                                            label="Credit or Debit Card Number"
-                                            placeholder="Credit Card Number"
-                                            {...form.getInputProps('creditCard')}
-                                            error={form.errors.creditCard}
-                                            helperText={form.errors.creditCard}
-                                        />
-                                    </Grid.Col>
-                                    <Grid.Col span={12}>
-                                        <TextField
-                                            id="standard-basic"
-                                            variant="standard"
-                                            style={{ width: '100%' }}
-                                            label="Card Holder's Name"
-                                            placeholder="Card Holder's Name"
-                                            {...form.getInputProps('holdername')}
-                                            error={form.errors.holdername}
-                                            helperText={form.errors.holdername}
-                                        />
-                                    </Grid.Col>
-                                    <Grid.Col span={12}>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                            <DemoContainer components={['DatePicker']}>
-                                                <DatePicker
-                                                    label="Expiry Date"
-                                                    id="expiry-Date"
-                                                    slotProps={{ textField: { variant: 'standard' } }}
-                                                    sx={{
-                                                        height: '50px',
-                                                        width: '100%',
-
-                                                        overflow: 'hidden',
-                                                        '& .MuiIconButton-root': {
-                                                            marginRight: '5px',
-                                                        },
+                                <Grid >
+                                    <div style={{ display: "flex" }}>
+                                        <Grid.Col >
+                                            <Grid.Col >
+                                                <Text
+                                                    mt="lg"
+                                                    style={{
+                                                        fontWeight: '700',
+                                                        fontSize: '22px',
+                                                        color: 'black',
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
                                                     }}
-                                                    InputProps={{
-                                                        style: {
-                                                            backgroundColor: 'lightgray',
-                                                            color: 'black',
-                                                        },
+                                                >
+                                                    Order Summary
+                                                </Text>
+                                            </Grid.Col>
+                                            <Paper mr="lg" p="md" mt="1rem" style={{ backgroundColor: "#f7f7f7" }}>
+                                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                                        <Grid.Col span={7}>
+                                                            <Typography variant="caption" color="textSecondary">Visa Type</Typography>
+                                                            <Typography variant="h6">Iphone 11 pro</Typography>
+                                                            <Typography variant="body2" color="textSecondary">
+                                                                256GB, Navy Blue
+                                                            </Typography>
+                                                        </Grid.Col>
+                                                        <Grid.Col span={3}>
+                                                            <Typography variant="caption" color="textSecondary">Quantity</Typography>
+                                                            <Typography variant="h6">2</Typography>
+                                                        </Grid.Col>
+                                                        <Grid.Col span={2}>
+                                                            <Typography variant="caption" color="textSecondary">Price</Typography>
+                                                            <Typography variant="h6" color="textSecondary">
+                                                                $900
+                                                            </Typography>
+                                                            <a href="#!" style={{ color: "#cecece" }}>
+                                                                <Icon className="fas fa-trash-alt" />
+                                                            </a>
+                                                        </Grid.Col>
+                                                    </div>
+
+                                                </div>
+                                            </Paper>
+                                        </Grid.Col>
+
+                                        <Divider size="sm" orientation="vertical" />
+
+
+
+                                        <Grid.Col>
+                                            <Grid.Col span={9}>
+                                                <Text
+                                                    mt="md"
+                                                    mr="lg"
+                                                    style={{
+                                                        fontWeight: '700',
+                                                        fontSize: '22px',
+                                                        color: 'black',
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
                                                     }}
-                                                    InputLabelProps={{
-                                                        style: {
-                                                            color: 'blue',
-                                                            position: 'static',
-                                                            transform: 'none',
-                                                        },
+                                                >
+                                                    Payment Details
+                                                </Text>
+                                                <Text
+
+                                                    style={{
+                                                        fontWeight: '400',
+                                                        fontSize: '15px',
+                                                        color: 'black',
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
                                                     }}
-                                                    value={form.values.expiryDate}
-                                                    onChange={(date) => form.setFieldValue('expiryDate', date)}
-                                                    error={form.errors.expiryDate}
-                                                    helperText={form.errors.expiryDate}
+                                                >
+                                                    All transactions are secure and encrypted.
+                                                </Text>
+                                            </Grid.Col>
+                                            <Grid.Col span={12}>
+                                                <TextField
+                                                    id="standard-basic"
+                                                    variant="standard"
+
+                                                    style={{ width: '100%', display: "flex", justifyContent: "center" }}
+                                                    label="Credit or Debit Card Number"
+                                                    placeholder="Credit Card Number"
+                                                    {...form.getInputProps('creditCard')}
+                                                    error={form.errors.creditCard}
+                                                    helperText={form.errors.creditCard}
                                                 />
-                                            </DemoContainer>
-                                        </LocalizationProvider>
-                                    </Grid.Col>
-                                    <Grid.Col span={12}>
-                                        <TextField
-                                            id="standard-basic"
-                                            variant="standard"
-                                            style={{ width: '100%' }}
-                                            label="CVV Code"
-                                            placeholder="CVV Code"
-                                            {...form.getInputProps('cvv')}
-                                            error={form.errors.cvv}
-                                            helperText={form.errors.cvv}
-                                        />
-                                    </Grid.Col>
-                                    <Grid.Col span={12}>
-                                        <div>
-                                            <Text style={{ marginBottom: '0.5rem' }}>Payment Type:</Text>
-                                            <select {...form.getInputProps('paymentType')} error={form.errors.paymentType}>
-                                                <option value="">Select Payment Type</option>
-                                                <option value="creditCard">Credit Card</option>
-                                                <option value="paypal">PayPal</option>
-                                                <option value="other">Other</option>
-                                            </select>
-                                        </div>
-                                    </Grid.Col>
+                                            </Grid.Col>
+                                            <Grid.Col span={12}>
+                                                <TextField
+                                                    id="standard-basic"
+                                                    variant="standard"
+                                                    style={{ width: '100%' }}
+                                                    label="Card Holder's Name"
+                                                    placeholder="Card Holder's Name"
+                                                    {...form.getInputProps('holdername')}
+                                                    error={form.errors.holdername}
+                                                    helperText={form.errors.holdername}
+                                                />
+                                            </Grid.Col>
+                                            <Grid.Col span={12}>
+                                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                    <DemoContainer components={['DatePicker']}>
+                                                        <DatePicker
+                                                            label="Expiry Date"
+                                                            id="expiry-Date"
+                                                            slotProps={{ textField: { variant: 'standard' } }}
+                                                            sx={{
+                                                                height: '50px',
+                                                                width: '100%',
+
+                                                                overflow: 'hidden',
+                                                                '& .MuiIconButton-root': {
+                                                                    marginRight: '5px',
+                                                                },
+                                                            }}
+                                                            InputProps={{
+                                                                style: {
+                                                                    backgroundColor: 'lightgray',
+                                                                    color: 'black',
+                                                                },
+                                                            }}
+                                                            InputLabelProps={{
+                                                                style: {
+                                                                    color: 'blue',
+                                                                    position: 'static',
+                                                                    transform: 'none',
+                                                                },
+                                                            }}
+                                                            value={form.values.expiryDate}
+                                                            onChange={(date) => form.setFieldValue('expiryDate', date)}
+                                                            error={form.errors.expiryDate}
+                                                            helperText={form.errors.expiryDate}
+                                                        />
+                                                    </DemoContainer>
+                                                </LocalizationProvider>
+                                            </Grid.Col>
+                                            <Grid.Col span={12}>
+                                                <TextField
+                                                    id="standard-basic"
+                                                    variant="standard"
+                                                    style={{ width: '100%' }}
+                                                    label="CVV Code"
+                                                    placeholder="CVV Code"
+                                                    {...form.getInputProps('cvv')}
+                                                    error={form.errors.cvv}
+                                                    helperText={form.errors.cvv}
+                                                />
+                                            </Grid.Col>
+                                            <Grid.Col span={12}>
+                                                <div>
+                                                    <Text style={{ marginBottom: '0.5rem' }}>Payment Type:</Text>
+                                                    <select {...form.getInputProps('paymentType')} error={form.errors.paymentType}>
+                                                        <option value="">Select Payment Type</option>
+                                                        <option value="creditCard">Credit Card</option>
+                                                        <option value="paypal">PayPal</option>
+                                                        <option value="other">Other</option>
+                                                    </select>
+                                                </div>
+                                            </Grid.Col>
 
 
 
-                                </Grid.Col>
+                                            <Box className={classes.totalAmount}>
+                                                <Typography variant="body2">Subtotal</Typography>
+                                                <Typography variant="body2">$4798.00</Typography>
+                                            </Box>
 
-                                {/* <Grid.Col span={6}>
-                                    <Text
-                                        mt="md"
-                                        style={{
-                                            fontWeight: '700',
-                                            fontSize: '22px',
-                                            color: 'black',
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                        }}
-                                    >
-                                        Payment Details
-                                    </Text>
-                                    <Text
-                                        style={{
-                                            fontWeight: '400',
-                                            fontSize: '15px',
-                                            color: 'black',
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                        }}
-                                    >
-                                        All transactions are secure and encrypted.
-                                    </Text>
-                                    <button onClick={handlePayment}>Pay with Stripe</button>
-                                </Grid.Col> */}
+                                            <Box className={classes.totalAmount}>
+                                                <Typography variant="body2">Shipping</Typography>
+                                                <Typography variant="body2">$20.00</Typography>
+                                            </Box>
+
+                                            <Box className={classes.totalAmount}>
+                                                <Typography variant="body2">Total (Incl. taxes)</Typography>
+                                                <Typography variant="body2">$4818.00</Typography>
+                                            </Box>
 
 
+                                        </Grid.Col>
 
-
-
+                                    </div>
+                                </Grid>
 
 
                             </Stepper.Step>
+
+
+
+
 
                             <Stepper.Completed>
                                 Completed! Form values:
@@ -712,7 +819,9 @@ export default function Form() {
                                     Back
                                 </Button>
                             )}
-                            {active !== 3 && <Button style={{ backgroundColor: "#4c0066" }} onClick={nextStep} >Next step</Button>}
+                            {active !== 3 && <Button onClick={nextStep} style={buttonStyle2}
+                                onMouseEnter={() => handleButtonMouseEnter()}
+                                onMouseLeave={() => handleButtonMouseLeave()} >Next step</Button>}
                         </Group>
                     </Paper>
                 </Grid.Col>
