@@ -4,12 +4,11 @@ import VisaData from '../../../Data.json';
 import axios from 'axios';
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
-export default function Visa({ onChange }) {
+export default function Visa({ onChange, setSelectedCountry, selectedCountry, setSelectedPlan }) {
     // Maintain hover state for each card and button
     const [hoveredCards, setHoveredCards] = useState(new Array(VisaData.visaData.length).fill(false));
     const [hoveredButton, setHoveredButton] = useState(null);
     const [countries, setCountries] = useState([]);
-    const [selectedCountry, setSelectedCountry] = useState('');
     const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
@@ -42,7 +41,9 @@ export default function Visa({ onChange }) {
         setHoveredCards(newHoveredCards);
     };
 
-    const handleProceedClick = () => {
+    const handleProceedClick = (project) => {
+        console.log("project data", project);
+        setSelectedPlan(project);
         const formElement = document.getElementById('form');
         if (formElement) {
             formElement.scrollIntoView({ behavior: 'smooth' });
@@ -100,7 +101,7 @@ export default function Visa({ onChange }) {
                                         <em>Select a country</em>
                                     </MenuItem>
                                     {countries.map((country) => (
-                                        <MenuItem key={country.cca2} value={country.cca2}>
+                                        <MenuItem key={country.cca2} value={country.name.common}>
                                             {country.name.common}
                                         </MenuItem>
                                     ))}
@@ -238,7 +239,7 @@ export default function Visa({ onChange }) {
                                         }}
                                         onMouseEnter={() => setHoveredButton(index)}
                                         onMouseLeave={() => setHoveredButton(null)}
-                                        onClick={handleProceedClick}
+                                        onClick={() => handleProceedClick(project)}
                                     >
                                         Proceed
                                     </Button>
