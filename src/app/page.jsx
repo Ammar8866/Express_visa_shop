@@ -22,8 +22,13 @@ export default function page() {
       <Header />
       <Container size="lg">
         <Title />
+<<<<<<< HEAD
         <Visa onChange={handleCountryChange} setSelectedCountry={setSelectedCountry} selectedCountry={selectedCountry} setSelectedPlan={setSelectedPlan} />
         <Form selectedCountry={selectedCountry} selectedPlan={selectedPlan} />
+=======
+        <Visa onChange={handleCountryChange} setSelectedCountry={setSelectedCountry} selectedCountry={selectedCountry} setSelectedPlan={setSelectedPlan}  />
+        <Form selectedCountry={selectedCountry} selectedPlan={selectedPlan}/>
+>>>>>>> 629f53128751c1c5524b515f3d13230252b9091c
         <Facilities />
       </Container>
       <Footer />

@@ -42,7 +42,11 @@ export default function Visa({ onChange, setSelectedCountry, selectedCountry, se
     };
 
     const handleProceedClick = (project) => {
+<<<<<<< HEAD
         console.log("project data", project);
+=======
+        console.log("project data",project);
+>>>>>>> 629f53128751c1c5524b515f3d13230252b9091c
         setSelectedPlan(project);
         const formElement = document.getElementById('form');
         if (formElement) {
@@ -239,7 +243,11 @@ export default function Visa({ onChange, setSelectedCountry, selectedCountry, se
                                         }}
                                         onMouseEnter={() => setHoveredButton(index)}
                                         onMouseLeave={() => setHoveredButton(null)}
+<<<<<<< HEAD
                                         onClick={() => handleProceedClick(project)}
+=======
+                                        onClick={()=>handleProceedClick(project)}
+>>>>>>> 629f53128751c1c5524b515f3d13230252b9091c
                                     >
                                         Proceed
                                     </Button>
