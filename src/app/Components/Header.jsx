@@ -7,7 +7,7 @@ import { TiThMenu } from "react-icons/ti";
 const links = [
     { link: "/", label: "Apply" },
     { link: "/track", label: "Track" },
-    { link: "/faq", label: "FAQ" },
+    { link: "/FAQ", label: "FAQ" },
     { link: "/blog", label: "Blog" },
     { link: "/Contact", label: "Contact" },
 ];

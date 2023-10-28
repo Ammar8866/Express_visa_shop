@@ -15,17 +15,26 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+import VisaData from '../../../Data.json';
+
 import {
-    Typography,
+    Typography, Select, MenuItem, FormControl, InputLabel
 } from "@mui/material";
 
 
-export default function Form({ selectedCountry, selectedPlan }) {
+export default function Form({ selectedCountry, selectedPlan, setSelectedCountry, countries, setSelectedPlan }) {
+    const label = `${selectedPlan.title} - ${selectedPlan.description} - ${selectedPlan.price}`;
     const [active, setActive] = useState(0);
     const [uploadedImages, setUploadedImages] = useState(new Array(CardData.cardData.length).fill(null));
     const [cardHoverStates, setCardHoverStates] = useState(new Array(CardData.cardData.length).fill(false));
     const fileInputs = useRef(Array(CardData.cardData.length).fill(null));
     const [isHovered, setIsHovered] = useState(false);
+    const [selectedPaymentType, setSelectedPaymentType] = useState('');
+
+    const handlePaymentTypeChange = (event) => {
+        setSelectedPaymentType(event.target.value);
+    };
 
 
     const buttonStyle2 = {
@@ -130,14 +139,16 @@ export default function Form({ selectedCountry, selectedPlan }) {
         setCardHoverStates(newHoverStates);
     };
 
+
     const form = useForm({
         initialValues: {
             username: '',
-            passportnumber: '',
-            name: '',
             email: '',
             mobilenumber: '',
-            whatsappnumber: '',
+            passportnumber: '',
+
+            profession: '',
+            travelpurpose: '',
             arrivalDate: null,
             passportExpiry: null,
             creditCard: '',
@@ -148,18 +159,20 @@ export default function Form({ selectedCountry, selectedPlan }) {
         },
         validate: (values) => {
             if (active === 0) {
-                return {
-                    username: values.username.trim().length < 6 ? 'Username must include at least 6 characters' : null,
-                    passportnumber: values.passportnumber.trim().length < 6 ? 'Passport Number must include at least 6 characters' : null,
-                    arrivalDate: values.arrivalDate ? null : 'Arrival Date is required',
-                    passportExpiry: values.passportExpiry ? null : 'Passport Expiry Date is required',
-                };
+                return {};
             } else if (active === 1) {
                 return {
-                    name: values.name.trim().length < 3 ? 'Name must include at least 3 characters' : null,
+                    username: values.username.trim().length < 6 ? 'Username must include at least 6 characters' : null,
                     email: /^\S+@\S+$/.test(values.email) ? null : 'Invalid email',
                     mobilenumber: values.mobilenumber.trim().length < 6 ? 'Mobile Number must include at least 6 characters' : null,
-                    whatsappnumber: values.whatsappnumber.trim().length < 6 ? 'WhatsApp Number must include at least 6 characters' : null,
+                    passportnumber: values.passportnumber.trim().length < 6 ? 'Passport Number must include at least 6 characters' : null,
+
+
+                    profession: values.profession ? null : 'Please Enter your Profession',
+                    travelpurpose: values.travelpurpose ? null : 'Please Enter What is the Purpose of your travelling ',
+                    arrivalDate: !values.arrivalDate ? 'Arrival Date is required' : null,
+                    passportExpiry: !values.passportExpiry ? 'Passport Expiry Date is required' : null,
+
                 };
             } else if (active === 2) {
                 return {
@@ -207,123 +220,7 @@ export default function Form({ selectedCountry, selectedPlan }) {
                             boxShadow: '2px 5px 20px #e9e9e9',
                         }}>
                         <Stepper active={active} mt="3rem">
-                            <Stepper.Step label="First step" description="Application Form">
-                                <Grid.Col span={12} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <Text
-                                        mt="md"
-                                        style={{
-                                            fontWeight: '700',
-                                            fontSize: '22px',
-                                            color: 'black',
-                                            display: 'flex',
-                                            justifyContent: 'left',
-                                        }}
-                                    >
-                                        Applicant 1
-                                    </Text>
-
-                                </Grid.Col>
-
-                                <Grid style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <Grid.Col span={{ lg: 6 }}>
-                                        <TextField
-                                            style={{ width: '500px' }}
-                                            id="standard-basic"
-                                            variant="standard"
-                                            label="Applicant Full Name"
-                                            placeholder="Enter Full Name"
-                                            {...form.getInputProps('username')}
-                                            error={form.errors.username}
-                                            helperText={form.errors.username}
-                                        />
-                                    </Grid.Col>
-                                    <Grid.Col span={{ lg: 6 }}>
-                                        <TextField
-                                            style={{ width: '500px' }}
-                                            id="standard-basic"
-                                            variant="standard"
-                                            label="Passport Number"
-                                            placeholder="Enter Passport Number"
-                                            {...form.getInputProps('passportnumber')}
-                                            error={form.errors.passportnumber}
-                                            helperText={form.errors.passportnumber}
-                                        />
-                                    </Grid.Col>
-                                </Grid>
-                                <Grid style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <Grid.Col span={{ lg: 6 }}>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                            <DemoContainer components={['DatePicker']}>
-                                                <DatePicker
-                                                    label="Arrival Date"
-                                                    id="arrival-date"
-                                                    slotProps={{ textField: { variant: 'standard' } }}
-                                                    sx={{
-                                                        height: '50px',
-                                                        width: '500px',
-                                                        overflow: 'hidden',
-                                                        '& .MuiIconButton-root': {
-                                                            marginRight: '5px',
-                                                        },
-                                                    }}
-                                                    InputProps={{
-                                                        style: {
-                                                            backgroundColor: 'lightgray',
-                                                            color: 'black',
-                                                        },
-                                                    }}
-                                                    InputLabelProps={{
-                                                        style: {
-                                                            color: 'blue',
-                                                            position: 'static',
-                                                            transform: 'none',
-                                                        },
-                                                    }}
-                                                    value={form.values.arrivalDate}
-                                                    onChange={(date) => form.setFieldValue('arrivalDate', date)}
-                                                    error={form.errors.arrivalDate}
-                                                    helperText={form.errors.arrivalDate}
-                                                />
-                                            </DemoContainer>
-                                        </LocalizationProvider>
-                                    </Grid.Col>
-                                    <Grid.Col span={{ lg: 6 }}>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                            <DemoContainer components={['DatePicker']}>
-                                                <DatePicker
-                                                    label="Passport Expiry"
-                                                    id="passport-expiry"
-                                                    slotProps={{ textField: { variant: 'standard' } }}
-                                                    sx={{
-                                                        height: '50px',
-                                                        width: '500px',
-                                                        overflow: 'hidden',
-                                                        '& .MuiIconButton-root': {
-                                                            marginRight: '5px',
-                                                        },
-                                                    }}
-                                                    InputProps={{
-                                                        style: {
-                                                            backgroundColor: 'lightgray',
-                                                            color: 'black',
-                                                        },
-                                                    }}
-                                                    InputLabelProps={{
-                                                        style: {
-                                                            color: 'blue',
-                                                            position: 'static',
-                                                            transform: 'none',
-                                                        },
-                                                    }}
-                                                    value={form.values.passportExpiry}
-                                                    onChange={(date) => form.setFieldValue('passportExpiry', date)}
-                                                    error={form.errors.passportExpiry}
-                                                    helperText={form.errors.passportExpiry}
-                                                />
-                                            </DemoContainer>
-                                        </LocalizationProvider>
-                                    </Grid.Col>
-                                </Grid>
+                            <Stepper.Step label="First step" description="Upload Documents">
                                 <Grid.Col span={12}>
                                     <Text
                                         mt="xl"
@@ -497,6 +394,7 @@ export default function Form({ selectedCountry, selectedPlan }) {
                                 <Grid.Col span={12}>
                                     <Text
                                         mt="md"
+                                        mb="md"
                                         style={{
                                             fontWeight: '700',
                                             fontSize: '22px',
@@ -511,20 +409,20 @@ export default function Form({ selectedCountry, selectedPlan }) {
                                 <Grid style={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <Grid.Col span={{ lg: 6 }}>
                                         <TextField
+                                            style={{ width: '500px' }}
                                             id="standard-basic"
-                                            style={{ width: '500px', marginTop: '10px' }}
                                             variant="standard"
-                                            label="Your Full Name"
-                                            placeholder="Your Full Name"
-                                            {...form.getInputProps('name')}
-                                            error={form.errors.name}
-                                            helperText={form.errors.name}
+                                            label="Applicant Full Name"
+                                            placeholder="Enter Full Name"
+                                            {...form.getInputProps('username')}
+                                            error={form.errors.username}
+                                            helperText={form.errors.username}
                                         />
                                     </Grid.Col>
                                     <Grid.Col span={{ lg: 6 }}>
                                         <TextField
                                             id="standard-basic"
-                                            style={{ width: '500px', marginTop: '10px' }}
+                                            style={{ width: '500px' }}
                                             variant="standard"
                                             label="Email"
                                             placeholder="Email"
@@ -533,12 +431,14 @@ export default function Form({ selectedCountry, selectedPlan }) {
                                             helperText={form.errors.email}
                                         />
                                     </Grid.Col>
+
                                 </Grid>
+
                                 <Grid style={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <Grid.Col span={{ lg: 6 }}>
                                         <TextField
                                             id="standard-basic"
-                                            style={{ width: '500px', marginTop: '25px' }}
+                                            style={{ width: '500px', marginTop: '10px' }}
                                             variant="standard"
                                             label="Mobile Number"
                                             placeholder="Enter Mobile Number"
@@ -549,15 +449,168 @@ export default function Form({ selectedCountry, selectedPlan }) {
                                     </Grid.Col>
                                     <Grid.Col span={{ lg: 6 }}>
                                         <TextField
+                                            style={{ width: '500px', marginTop: '10px' }}
                                             id="standard-basic"
-                                            style={{ width: '500px', marginTop: '25px' }}
                                             variant="standard"
-                                            label="WhatsApp Number"
-                                            placeholder="Enter WhatsApp Number"
-                                            {...form.getInputProps('whatsappnumber')}
-                                            error={form.errors.whatsappnumber}
-                                            helperText={form.errors.whatsappnumber}
+                                            label="Passport Number"
+                                            placeholder="Enter Passport Number"
+                                            {...form.getInputProps('passportnumber')}
+                                            error={form.errors.passportnumber}
+                                            helperText={form.errors.passportnumber}
                                         />
+                                    </Grid.Col>
+
+                                </Grid>
+
+
+
+                                <Grid style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <Grid.Col span={{ lg: 6 }}>
+                                        <FormControl variant="standard" style={{ width: '500px', marginTop: '10px' }}>
+                                            <InputLabel id="nationality-label">Nationality</InputLabel>
+                                            <Select
+
+                                                labelId="nationality-label"
+                                                id="nationality-select"
+                                                value={selectedCountry}
+                                                onChange={(e) => setSelectedCountry(e.target.value)}
+
+                                                label="Nationality"
+
+                                            >
+                                                <MenuItem value="">
+                                                    <em>Select a country</em>
+                                                </MenuItem>
+                                                {countries.map((country) => (
+                                                    <MenuItem key={country.cca2} value={country.name.common}>
+                                                        {country.name.common}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid.Col>
+
+                                    <Grid.Col span={{ lg: 6 }}>
+                                        <FormControl variant="standard" style={{ width: '500px', marginTop: '10px' }}>
+                                            <InputLabel id="visa-type-label">Visa Type</InputLabel>
+                                            <Select
+                                                labelId="visa-type-label"
+                                                id="visa-type-select"
+                                                value={selectedPlan}
+                                                onChange={(e) => setSelectedPlan(e.target.value)}
+                                            >
+                                                <MenuItem value="">Select Visa Type</MenuItem>
+                                                {VisaData.visaData.map((data)=>(
+                                                    <MenuItem key={data.id} value={data}>{`${data.title} - ${data.description} - ${data.price} USD`}</MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid.Col>
+                                </Grid>
+
+
+                                <Grid style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <Grid.Col span={{ lg: 6 }}>
+                                        <TextField
+                                            style={{ width: '500px', marginTop: '10px' }}
+                                            id="standard-basic"
+                                            variant="standard"
+                                            label="Profession"
+                                            placeholder="Enter your Profession"
+                                            {...form.getInputProps('profession')}
+                                            error={form.errors.profession}
+                                            helperText={form.errors.profession}
+                                        />
+                                    </Grid.Col>
+                                    <Grid.Col span={{ lg: 6 }}>
+                                        <TextField
+                                            style={{ width: '500px', marginTop: '10px' }}
+                                            id="standard-basic"
+                                            variant="standard"
+                                            label="Purpose of Travel"
+                                            placeholder="Enter the Purpose of your Travel"
+                                            {...form.getInputProps('travelpurpose')}
+                                            error={form.errors.travelpurpose}
+                                            helperText={form.errors.travelpurpose}
+                                        />
+                                    </Grid.Col>
+
+                                </Grid>
+
+
+
+                                <Grid style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <Grid.Col span={{ lg: 6 }}>
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                            <DemoContainer components={['DatePicker']}>
+                                                <DatePicker
+                                                    label="Arrival Date"
+                                                    id="arrival-date"
+                                                    slotProps={{ textField: { variant: 'standard' } }}
+                                                    sx={{
+                                                        height: '50px',
+                                                        width: '500px',
+                                                        overflow: 'hidden',
+                                                        '& .MuiIconButton-root': {
+                                                            marginRight: '5px',
+                                                        },
+                                                    }}
+                                                    InputProps={{
+                                                        style: {
+                                                            backgroundColor: 'lightgray',
+                                                            color: 'black',
+                                                        },
+                                                    }}
+                                                    InputLabelProps={{
+                                                        style: {
+                                                            color: 'blue',
+                                                            position: 'static',
+                                                            transform: 'none',
+                                                        },
+                                                    }}
+                                                    value={form.values.arrivalDate}
+                                                    onChange={(date) => form.setFieldValue('arrivalDate', date)}
+                                                    error={form.errors.arrivalDate}
+                                                    helperText={form.errors.arrivalDate}
+                                                />
+                                            </DemoContainer>
+                                        </LocalizationProvider>
+                                    </Grid.Col>
+                                    <Grid.Col span={{ lg: 6 }}>
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                            <DemoContainer components={['DatePicker']}>
+                                                <DatePicker
+                                                    label="Passport Expiry"
+                                                    id="passport-expiry"
+                                                    slotProps={{ textField: { variant: 'standard' } }}
+                                                    sx={{
+                                                        height: '50px',
+                                                        width: '500px',
+                                                        overflow: 'hidden',
+                                                        '& .MuiIconButton-root': {
+                                                            marginRight: '5px',
+                                                        },
+                                                    }}
+                                                    InputProps={{
+                                                        style: {
+                                                            backgroundColor: 'lightgray',
+                                                            color: 'black',
+                                                        },
+                                                    }}
+                                                    InputLabelProps={{
+                                                        style: {
+                                                            color: 'blue',
+                                                            position: 'static',
+                                                            transform: 'none',
+                                                        },
+                                                    }}
+                                                    value={form.values.passportExpiry}
+                                                    onChange={(date) => form.setFieldValue('passportExpiry', date)}
+                                                    error={form.errors.passportExpiry}
+                                                    helperText={form.errors.passportExpiry}
+                                                />
+                                            </DemoContainer>
+                                        </LocalizationProvider>
                                     </Grid.Col>
                                 </Grid>
                             </Stepper.Step>

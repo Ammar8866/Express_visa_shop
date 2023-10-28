@@ -35,8 +35,40 @@ export default function Contact() {
         <>
             <Header />
             <Container size="lg">
-                <Grid mt="7rem">
-                    <Grid.Col p="md" span={6} mt="md" mb="xl">
+                <Grid mt="8rem">
+                    <Grid.Col span={12} mt="1rem">
+
+                        <Text ta="center"
+                            style={{
+                                fontWeight: '700',
+                                fontSize: '48px',
+                                color: 'black', // Set the color for the first half
+                                display: 'flex',
+                                justifyContent: 'center',
+
+                            }}
+                        >
+                            Contact US
+                        </Text>
+                    </Grid.Col>
+                    <Grid.Col span={12}>
+                        <Text ta="center"
+                            style={{
+
+                                fontWeight: '700',
+                                fontSize: '28px',
+                                color: 'red',
+                                display: 'flex',
+                                justifyContent: 'center',
+
+                            }}
+                        >
+                            (Please contact our amiable and multilingual staff.)
+                        </Text>
+
+
+                    </Grid.Col>
+                    <Grid.Col p="md"  span={{ base: 12, xs: 12, sm: 12, md: 12, lg: 6 }} mt="3rem" mb="xl" >
                         <Paper
                             p="sm"
                             style={{
@@ -146,7 +178,7 @@ export default function Contact() {
                             </Grid>
                         </Paper>
                     </Grid.Col>
-                    <Grid.Col span={6} >
+                    <Grid.Col span={{ base: 12, xs: 12, sm: 12, md: 12, lg: 6 }} mt="3rem" >
                         <form onSubmit={form.onSubmit(() => { })}>
                             <Title
                                 order={2}

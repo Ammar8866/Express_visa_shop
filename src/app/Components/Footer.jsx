@@ -11,7 +11,7 @@ const links = [
     { link: "/Contact", label: "Contact" },
     { link: "#", label: "Track" },
     { link: "#", label: "Blog" },
-    { link: "#", label: "FAQ" },
+    { link: "/FAQ", label: "FAQ" },
 ];
 
 export default function Footer() {
@@ -29,77 +29,77 @@ export default function Footer() {
     ));
 
     return (
-        <Paper
-            mt="3rem"
-            style={{
-                width: "100%",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                zIndex: 1000,
-                background: "#4c0066",
-                boxShadow: "0px 2px 5px rgba(255, 255, 255, 0.5)",
-            }}
-        >
-            <div
+            <Paper
+                mt="3rem"
                 style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: `${rem(16)} ${rem(16)}`,
-                    flexDirection: "row",
+                    width: "100%",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    zIndex: 1000,
+                    background: "#4c0066",
+                    boxShadow: "0px 2px 5px rgba(255, 255, 255, 0.5)",
                 }}
             >
-
-                <Group
+                <div
                     style={{
-                        marginTop: 0,
-                        marginBottom: 5,
-                        marginLeft: 0,
-                        marginRight: 0,
+                        display: "flex",
+                        flexWrap: "wrap",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: `${rem(16)} ${rem(16)}`,
+                        flexDirection: "row",
                     }}
                 >
-                    {items}
-                </Group>
 
-                <Group
-                    style={{
-                        marginTop: 0,
-                        marginBottom: 5,
-                        marginLeft: 0,
-                        marginRight: 0,
-                        color: "white",
+                    <Group
+                        style={{
+                            marginTop: 0,
+                            marginBottom: 5,
+                            marginLeft: 0,
+                            marginRight: 0,
+                        }}
+                    >
+                        {items}
+                    </Group>
 
-                    }}
-                >
-                    expressvisadubai.com 2023 all rights reserved.
+                    <Group
+                        style={{
+                            marginTop: 0,
+                            marginBottom: 5,
+                            marginLeft: 0,
+                            marginRight: 0,
+                            color: "white",
+
+                        }}
+                    >
+                        expressvisadubai.com 2023 all rights reserved.
 
 
-                </Group>
+                    </Group>
 
-                <Group gap="xs" justify="flex-end" wrap="nowrap">
-                    <ActionIcon size="lg" variant="default" radius="xl">
-                        <IconBrandTwitter
-                            style={{ width: rem(18), height: rem(18) }}
-                            stroke={1.5}
-                        />
-                    </ActionIcon>
-                    <ActionIcon size="lg" variant="default" radius="xl">
-                        <IconBrandYoutube
-                            style={{ width: rem(18), height: rem(18) }}
-                            stroke={1.5}
-                        />
-                    </ActionIcon>
-                    <ActionIcon size="lg" variant="default" radius="xl">
-                        <IconBrandInstagram
-                            style={{ width: rem(18), height: rem(18) }}
-                            stroke={1.5}
-                        />
-                    </ActionIcon>
-                </Group>
-            </div>
-        </Paper>
+                    <Group gap="xs" justify="flex-end" wrap="nowrap">
+                        <ActionIcon size="lg" variant="default" radius="xl">
+                            <IconBrandTwitter
+                                style={{ width: rem(18), height: rem(18) }}
+                                stroke={1.5}
+                            />
+                        </ActionIcon>
+                        <ActionIcon size="lg" variant="default" radius="xl">
+                            <IconBrandYoutube
+                                style={{ width: rem(18), height: rem(18) }}
+                                stroke={1.5}
+                            />
+                        </ActionIcon>
+                        <ActionIcon size="lg" variant="default" radius="xl">
+                            <IconBrandInstagram
+                                style={{ width: rem(18), height: rem(18) }}
+                                stroke={1.5}
+                            />
+                        </ActionIcon>
+                    </Group>
+                </div>
+            </Paper>
     );
 };
 

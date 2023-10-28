@@ -1,30 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Grid, Text, Card, Container, Group, Button, Divider, Paper } from '@mantine/core';
 import VisaData from '../../../Data.json';
-import axios from 'axios';
+
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
-export default function Visa({ onChange, setSelectedCountry, selectedCountry, setSelectedPlan }) {
+export default function Visa({ setSelectedCountry, selectedCountry, setSelectedPlan, countries }) {
     // Maintain hover state for each card and button
     const [hoveredCards, setHoveredCards] = useState(new Array(VisaData.visaData.length).fill(false));
     const [hoveredButton, setHoveredButton] = useState(null);
-    const [countries, setCountries] = useState([]);
     const [isHovered, setIsHovered] = useState(false);
 
-    useEffect(() => {
-        // Fetch the list of countries
-        axios.get('https://restcountries.com/v3.1/all')
-            .then((response) => {
-                setCountries(response.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching countries:', error);
-            });
-    }, []);
 
     const handleCountryChange = (event) => {
         setSelectedCountry(event.target.value);
-        onChange(event.target.value);
     };
 
 
